@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AutoMapper;
+using Domain.Entities;
+using Domain.Models.Views;
 
 namespace Application.Mappings
 {
-    public class MappingProfile
+    public class MappingProfile: Profile
     {
-
+        public MappingProfile()
+        {
+            CreateMap<Category, CategoryViewModel>();
+        }
     }
 }
