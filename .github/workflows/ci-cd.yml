@@ -44,4 +44,4 @@ jobs:
           script: |
             cd ./Presentation
             dotnet publish -c Release
-            cp -r ./bin/Release/net8.0/publish/* C:/Users/ixsapp/Desktop/HappyMilk
+            cp -r ./bin/Release/net8.0/publish/* C:/Users/ixsapp/Desktop/TestCICD
