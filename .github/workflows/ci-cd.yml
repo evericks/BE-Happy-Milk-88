@@ -41,7 +41,8 @@ jobs:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USERNAME }}
           key: ${{ secrets.VPS_SSH_KEY }}
+          port: 20022
           script: |
-            /Presentation
+            cd ./Presentation
             dotnet publish -c Release
-            cp -r ./bin/Release/net8.0/publish/* C:\Users\ixsapp\Desktop\TestCICD
+            cp -r ./bin/Release/net8.0/publish/* C:/Users/ixsapp/Desktop/TestCICD
