@@ -26,6 +26,8 @@ namespace Domain.Models.Views
 
         public int Quantity { get; set; }
 
+        public int Sold { get; set; }
+
         public string Status { get; set; } = null!;
 
         public virtual ICollection<ProductCategoryViewModel> ProductCategories { get; set; } = new List<ProductCategoryViewModel>();

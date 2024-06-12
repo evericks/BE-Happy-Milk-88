@@ -21,7 +21,8 @@ namespace Application.Mappings
             CreateMap<Category, CategoryViewModel>();
 
             // Product
-            CreateMap<Product, ProductViewModel>();
+            CreateMap<Product, ProductViewModel>()
+                .ForMember(dest => dest.Sold, opt => opt.MapFrom(src => src.OrderDetails.Sum(x => x.Quantity)));
             CreateMap<ProductCreateModel, Product>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid()))
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => ProductStatuses.ACTIVE))
