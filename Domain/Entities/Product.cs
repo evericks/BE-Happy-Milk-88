@@ -19,10 +19,6 @@ public partial class Product
 
     public string Brand { get; set; } = null!;
 
-    public int AgeFrom { get; set; }
-
-    public int AgeTo { get; set; }
-
     public int Price { get; set; }
 
     public int? PromotionPrice { get; set; }

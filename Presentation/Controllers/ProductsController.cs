@@ -7,28 +7,23 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Controllers
 {
-    [Route("api/categories")]
+    [Route("api/products")]
     [ApiController]
-    public class CategoriesController : ControllerBase
+    public class ProductsController : ControllerBase
     {
-        private readonly ICategoryService _categoryService;
-        public CategoriesController(ICategoryService categoryService)
+        private readonly IProductService _productService;
+        public ProductsController(IProductService productService)
         {
-            _categoryService = categoryService;
+            _productService = productService;
         }
 
         [HttpPost]
         [Route("filter")]
-        public async Task<IActionResult> GetCategories([FromBody] CategoryFilterModel filter)
+        public async Task<IActionResult> GetProducts([FromBody] ProductFilterModel filter, [FromQuery] PaginationRequestModel pagination)
         {
             try
             {
-                var aaa = new PaginationRequestModel()
-                {
-                    PageNumber = 0,
-                    PageSize = 10,
-                };
-                return await _categoryService.GetCategories(filter, aaa);
+                return await _productService.GetProducts(filter, pagination);
             }
             catch (Exception e)
             {
@@ -38,11 +33,11 @@ namespace Presentation.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        public async Task<IActionResult> GetCategory([FromRoute] Guid id)
+        public async Task<IActionResult> GetProduct([FromRoute] Guid id)
         {
             try
             {
-                return await _categoryService.GetCategory(id);
+                return await _productService.GetProduct(id);
             }
             catch (Exception e)
             {
@@ -51,11 +46,11 @@ namespace Presentation.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateCategory([FromBody] CategoryCreateModel model)
+        public async Task<IActionResult> CreateProduct([FromBody] ProductCreateModel model)
         {
             try
             {
-                return await _categoryService.CreateCategory(model);
+                return await _productService.CreateProduct(model);
             }
             catch (Exception e)
             {
@@ -65,11 +60,11 @@ namespace Presentation.Controllers
 
         [HttpPut]
         [Route("{id}")]
-        public async Task<IActionResult> UpdateCategory([FromRoute] Guid id ,[FromBody] CategoryUpdateModel model)
+        public async Task<IActionResult> UpdateProduct([FromRoute] Guid id, [FromBody] ProductUpdateModel model)
         {
             try
             {
-                return await _categoryService.UpdateCategory(id, model);
+                return await _productService.UpdateProduct(id, model);
             }
             catch (Exception e)
             {

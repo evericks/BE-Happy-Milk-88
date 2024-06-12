@@ -3,6 +3,7 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Common.Extensions;
 using Data;
+using Data.Repositories.Implementations;
 using Data.Repositories.Interfaces;
 using Domain.Constants;
 using Domain.Entities;
@@ -13,30 +14,36 @@ using Domain.Models.Updates;
 using Domain.Models.Views;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Linq;
 
 namespace Application.Services.Implementations
 {
-    public class CategoryService : BaseService, ICategoryService
+    public class ProductService : BaseService, IProductService
     {
-        private readonly ICategoryRepository _categoryRepository;
-        public CategoryService(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
+        private readonly IProductRepository _productRepository;
+        public ProductService(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
         {
-            _categoryRepository = unitOfWork.Category;
+            _productRepository = unitOfWork.Product;
         }
 
-        public async Task<IActionResult> GetCategories(CategoryFilterModel filter, PaginationRequestModel pagination)
+        public async Task<IActionResult> GetProducts(ProductFilterModel filter, PaginationRequestModel pagination)
         {
             try
             {
-                var query = _categoryRepository.GetAll();
-                if (filter.Name != null)
+                var query = _productRepository.GetAll();
+                if (filter.Search != null && !filter.Search.IsNullOrEmpty())
                 {
-                    query = query.Where(x => x.Name.Contains(filter.Name));
+                    query = query.Where(x => x.Name.Contains(filter.Search));
+                }
+                if (filter.Categories != null && filter.Categories.Count > 0)
+                {
+                    query = query.Where(x => filter.Categories.All(fc => x.ProductCategories.Select(x => x.CategoryId).Contains(fc)));
                 }
 
                 var totalRows = query.Count();
                 var categories = await query
-                    .ProjectTo<CategoryViewModel>(_mapper.ConfigurationProvider)
+                    .ProjectTo<ProductViewModel>(_mapper.ConfigurationProvider)
                     .Paginate(pagination)
                     .ToListAsync();
 
@@ -48,20 +55,20 @@ namespace Application.Services.Implementations
             }
         }
 
-        public async Task<IActionResult> GetCategory(Guid id)
+        public async Task<IActionResult> GetProduct(Guid id)
         {
             try
             {
-                var category = await _categoryRepository.Where(x => x.Id.Equals(id))
-                    .ProjectTo<CategoryViewModel>(_mapper.ConfigurationProvider)
+                var product = await _productRepository.Where(x => x.Id.Equals(id))
+                    .ProjectTo<ProductViewModel>(_mapper.ConfigurationProvider)
                     .FirstOrDefaultAsync();
 
-                if (category == null)
+                if (product == null)
                 {
                     return AppErrors.RECORD_NOT_FOUND.NotFound();
                 }
 
-                return category.Ok();
+                return product.Ok();
             }
             catch (Exception)
             {
@@ -69,16 +76,16 @@ namespace Application.Services.Implementations
             }
         }
 
-        public async Task<IActionResult> CreateCategory(CategoryCreateModel model)
+        public async Task<IActionResult> CreateProduct(ProductCreateModel model)
         {
             try
             {
-                var category = _mapper.Map<Category>(model);
-                _categoryRepository.Add(category);
+                var product = _mapper.Map<Product>(model);
+                _productRepository.Add(product);
                 var result = await _unitOfWork.SaveChangesAsync();
                 if (result > 0)
                 {
-                    return await GetCategory(category.Id);
+                    return await GetProduct(product.Id);
                 }
                 return AppErrors.CREATE_FAIL.UnprocessableEntity();
             }
@@ -88,24 +95,24 @@ namespace Application.Services.Implementations
             }
         }
 
-        public async Task<IActionResult> UpdateCategory(Guid id, CategoryUpdateModel model)
+        public async Task<IActionResult> UpdateProduct(Guid id, ProductUpdateModel model)
         {
             try
             {
-                var category = await _categoryRepository.Where(x => x.Id.Equals(id))
+                var product = await _productRepository.Where(x => x.Id.Equals(id))
                     .FirstOrDefaultAsync();
 
-                if (category == null)
+                if (product == null)
                 {
                     return AppErrors.RECORD_NOT_FOUND.NotFound();
                 }
 
-                _mapper.Map(model, category);
-                _categoryRepository.Update(category);
+                _mapper.Map(model, product);
+                _productRepository.Update(product);
                 var result = await _unitOfWork.SaveChangesAsync();
                 if (result > 0)
                 {
-                    return await GetCategory(id);
+                    return await GetProduct(id);
                 }
                 return AppErrors.UPDATE_FAIL.UnprocessableEntity();
             }

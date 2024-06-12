@@ -22,6 +22,69 @@ namespace Data
             get { return _category ??= new CategoryRepository(_context); }
         }
 
+        public IProductCategoryRepository _productCateogry = null!;
+
+        public IProductCategoryRepository ProductCategory
+        {
+            get { return _productCateogry ??= new ProductCategoryRepository(_context); }
+        }
+
+        public ICartRepository _cart = null!;
+
+        public ICartRepository Cart
+        {
+            get { return _cart ??= new CartRepository(_context); }
+        }
+
+        public ICartItemRepository _cartItem = null!;
+
+        public ICartItemRepository CartItem
+        {
+            get { return _cartItem ??= new CartItemRepository(_context); }
+        }
+
+        public IOrderRepository _order = null!;
+
+        public IOrderRepository Order
+        {
+            get { return _order ??= new OrderRepository(_context); }
+        }
+
+        public IOrderDetailRepository _orderDetail = null!;
+
+        public IOrderDetailRepository OrderDetail
+        {
+            get { return _orderDetail ??= new OrderDetailRepository(_context); }
+        }
+
+        public IFeedbackRepository _feedback = null!;
+
+        public IFeedbackRepository Feedback
+        {
+            get { return _feedback ??= new FeedbackRepository(_context); }
+        }
+
+        public IAdminRepository _admin = null!;
+
+        public IAdminRepository Admin
+        {
+            get { return _admin ??= new AdminRepository(_context); }
+        }
+
+        public ICustomerRepository _customer = null!;
+
+        public ICustomerRepository Customer
+        {
+            get { return _customer ??= new CustomerRepository(_context); }
+        }
+
+        public IProductRepository _product = null!;
+
+        public IProductRepository Product
+        {
+            get { return _product ??= new ProductRepository(_context); }
+        }
+
         public void BeginTransaction()
         {
             _transaction = _context.Database.BeginTransaction();

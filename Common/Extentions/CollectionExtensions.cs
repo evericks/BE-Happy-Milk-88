@@ -5,7 +5,7 @@ namespace Common.Extensions
     public static class CollectionExtensions
     {
         // Paged result
-        public static Paged<T> ToPaged<T>(this ICollection<T> source, PaginationRequestModel pagination, int totalRow)
+        public static Paged<T> ToPaged<T>(this ICollection<T> source, PaginationRequestModel pagination, int totalRows)
         {
             return new Paged<T>
             {
@@ -14,7 +14,7 @@ namespace Common.Extensions
                 {
                     PageNumber = pagination.PageNumber,
                     PageSize = pagination.PageSize,
-                    TotalRow = totalRow,
+                    totalRows = totalRows,
                 },
             };
         }

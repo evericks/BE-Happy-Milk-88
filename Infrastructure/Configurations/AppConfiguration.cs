@@ -12,6 +12,7 @@ namespace Infrastructure.Configurations
         {
             // Service life time DI
             services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IProductService, ProductService>();
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
         }
