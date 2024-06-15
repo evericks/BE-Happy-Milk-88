@@ -56,10 +56,12 @@ public partial class HappyMilkContext : DbContext
 
             entity.ToTable("Cart");
 
+            entity.HasIndex(e => e.CustomerId, "IX_Cart").IsUnique();
+
             entity.Property(e => e.Id).ValueGeneratedNever();
 
-            entity.HasOne(d => d.Customer).WithMany(p => p.Carts)
-                .HasForeignKey(d => d.CustomerId)
+            entity.HasOne(d => d.Customer).WithOne(p => p.Cart)
+                .HasForeignKey<Cart>(d => d.CustomerId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Cart__CustomerId__48CFD27E");
         });

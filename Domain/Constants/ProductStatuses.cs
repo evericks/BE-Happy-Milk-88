@@ -4,6 +4,5 @@
     {
         public const string ACTIVE = "Active";
         public const string INACTIVE = "Inactive";
-
     }
 }

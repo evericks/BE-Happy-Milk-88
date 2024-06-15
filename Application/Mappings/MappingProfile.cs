@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Domain.Constants;
 using Domain.Entities;
+using Domain.Models.Authentications;
 using Domain.Models.Creates;
 using Domain.Models.Updates;
 using Domain.Models.Views;
@@ -16,6 +17,20 @@ namespace Application.Mappings
             CreateMap<double?, double>().ConvertUsing((src, dest) => src ?? dest);
             CreateMap<Guid?, Guid>().ConvertUsing((src, dest) => src ?? dest);
             CreateMap<DateTime?, DateTime>().ConvertUsing((src, dest) => src ?? dest);
+
+            // Auth
+            CreateMap<Customer, AuthModel>();
+
+            // Customer
+            CreateMap<Customer, CustomerViewModel>();
+
+            // Cart
+            CreateMap<Cart, CartViewModel>();
+
+            // Cart Item
+            CreateMap<CartItem, CartItemViewModel>();
+            CreateMap<CartItemCreateModel, CartItem>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid()));
 
             // Category
             CreateMap<Category, CategoryViewModel>();
