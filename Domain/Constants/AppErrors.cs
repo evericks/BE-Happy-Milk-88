@@ -7,7 +7,7 @@
 
         // User
         public const string USER_NOT_EXIST = "User không tồn tại";
-        public const string USERNAME_EXIST = "Vui lòng chọn tên khác tên user đã tồn tại!";
+        public const string USERNAME_EXIST = "Username đã tồn tại";
 
         // Cart
         public const string CART_NOT_EXIST = "Giỏ hàng không tồn tại";
@@ -16,7 +16,7 @@
         public const string CART_ITEM_NOT_EXIST = "Sản phẩm không tồn tại trong giỏ hàng";
 
         // Product
-        public const string PRODUCT_QUANTITY_NOT_ENOUGH = "Số lượng sản phẩm không đủ";
+        public const string PRODUCT_QUANTITY_NOT_ENOUGH = "Số lượng sản phẩm còn lại không đủ";
 
         // Query
         public const string CREATE_FAIL = "Tạo mới thất bại";

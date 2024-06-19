@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Common.Helpers;
 using Domain.Constants;
 using Domain.Entities;
 using Domain.Models.Authentications;
@@ -23,6 +24,15 @@ namespace Application.Mappings
 
             // Customer
             CreateMap<Customer, CustomerViewModel>();
+            CreateMap<CustomerCreateModel, Customer>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid()))
+                .ForMember(dest => dest.Point, opt => opt.MapFrom(src => 0))
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => UserStatuses.ACTIVE))
+                .ForMember(dest => dest.CreateAt, opt => opt.MapFrom(src => DateTimeHelper.VnNow))
+                .ForMember(dest => dest.Cart, opt => opt.MapFrom((src, dest) => new Cart {
+                    Id = Guid.NewGuid(),
+                    CustomerId = dest.Id
+                }));
 
             // Cart
             CreateMap<Cart, CartViewModel>();
