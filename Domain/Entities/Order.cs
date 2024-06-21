@@ -23,7 +23,7 @@ public partial class Order
 
     public string Status { get; set; } = null!;
 
-    public DateTime? CreateAt { get; set; }
+    public DateTime CreateAt { get; set; }
 
     public virtual Customer Customer { get; set; } = null!;
 

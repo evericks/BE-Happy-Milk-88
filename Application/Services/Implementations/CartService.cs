@@ -48,6 +48,10 @@ namespace Application.Services.Implementations
         {
             try
             {
+                if (model.Quantity <= 0)
+                {
+                    return AppErrors.INVALID_QUANTITY.BadRequest();
+                }
                 var cart = await _cartRepository.Where(x => x.CustomerId.Equals(customerId))
                     .Include(x => x.CartItems)
                     .FirstOrDefaultAsync();
@@ -106,6 +110,10 @@ namespace Application.Services.Implementations
         {
             try
             {
+                if (quantity <= 0)
+                {
+                    return AppErrors.INVALID_QUANTITY.BadRequest();
+                }
                 var cartItem = await _cartItemRepository.Where(x => x.Id.Equals(id)).FirstOrDefaultAsync();
                 if (cartItem == null)
                 {

@@ -1,9 +1,9 @@
-﻿using Application.Services.Interfaces;
+﻿
+using Application.Services.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Common.Extensions;
 using Data;
-using Data.Repositories.Implementations;
 using Data.Repositories.Interfaces;
 using Domain.Constants;
 using Domain.Entities;
@@ -15,7 +15,6 @@ using Domain.Models.Views;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using System.Linq;
 
 namespace Application.Services.Implementations
 {

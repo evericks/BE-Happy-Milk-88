@@ -17,6 +17,7 @@ namespace Infrastructure.Configurations
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<ICartService, CartService>();
             services.AddScoped<ICustomerService, CustomerService>();
+            services.AddScoped<IOrderService, OrderService>();
             
             services.AddTransient<IUnitOfWork, UnitOfWork>();
         }

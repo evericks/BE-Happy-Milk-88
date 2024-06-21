@@ -16,11 +16,16 @@
         public const string CART_ITEM_NOT_EXIST = "Sản phẩm không tồn tại trong giỏ hàng";
 
         // Product
-        public const string PRODUCT_QUANTITY_NOT_ENOUGH = "Số lượng sản phẩm còn lại không đủ";
+        public const string INVALID_QUANTITY = "Số lượng phải lớn hơn 0";
+        public const string PRODUCT_QUANTITY_NOT_ENOUGH = "Số lượng trong giỏ hàng không được vượt quá số lượng còn lại của sản phẩm.";
 
         // Query
         public const string CREATE_FAIL = "Tạo mới thất bại";
         public const string UPDATE_FAIL = "Cập nhật thất bại";
         public const string RECORD_NOT_FOUND = "Đối tượng không tồn tại";
+
+        // Order
+        public const string INVALID_PAYMENT_METHOD = "Phương thức thanh toán không tồn tại hoặc chưa hổ trợ";
+
     }
 }

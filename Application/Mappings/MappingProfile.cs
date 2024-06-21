@@ -61,6 +61,24 @@ namespace Application.Mappings
             CreateMap<ProductUpdateModel, Product>()
                 .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
 
+            // Order
+            CreateMap<Order, OrderViewModel>();
+            CreateMap<OrderCreateModel, Order>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid()))
+                .ForMember(dest => dest.CreateAt, opt => opt.MapFrom(src => DateTimeHelper.VnNow))
+                .ForMember(dest => dest.OrderDetails, opt => opt.MapFrom((src, dest) => src.OrderDetails.Select(x =>
+                new OrderDetail
+                {
+                    Id = Guid.NewGuid(),
+                    ProductId = x.ProductId,
+                    Quantity = x.Quantity,
+                    Price = x.Price,
+                    OrderId = dest.Id,
+                })));
+
+            // OrderDetail
+            CreateMap<OrderDetail, OrderDetailViewModel>();
+
             // Product Category
             CreateMap<ProductCategory, ProductCategoryViewModel>();
         }
