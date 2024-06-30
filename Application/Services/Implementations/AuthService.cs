@@ -106,11 +106,13 @@ namespace Application.Services.Implementations
             }
         }
 
+        // API use JWT token
         private string GenerateJwtToken(AuthModel auth)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor
+            // Bo cai gi vao token de sau lay ra xac thuc
             {
                 Subject = new ClaimsIdentity(new[]
                 {
@@ -118,6 +120,7 @@ namespace Application.Services.Implementations
                     new Claim("role", auth.Role.ToString()),
                 }),
                 Expires = DateTime.Now.AddDays(7),
+                // Lay secrect key tu appsetings.json de ma hoa token
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);

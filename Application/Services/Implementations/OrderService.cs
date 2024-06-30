@@ -7,6 +7,7 @@ using Data.Repositories.Interfaces;
 using Domain.Constants;
 using Domain.Entities;
 using Domain.Models.Creates;
+using Domain.Models.Filters;
 using Domain.Models.Views;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -24,6 +25,43 @@ namespace Application.Services.Implementations
             _orderRepository = unitOfWork.Order;
             _productRepository  = unitOfWork.Product;
             _cartRepository = unitOfWork.Cart;
+        }
+
+        public async Task<IActionResult> GetCustomerOrders(Guid id, OrderFilterModel filter)
+        {
+            try
+            {
+                var query = _orderRepository.Where(x => x.CustomerId.Equals(id));
+                var totalRows = query.Count();
+                var orders = await query
+                    .ProjectTo<OrderViewModel>(_mapper.ConfigurationProvider)
+                    .OrderByDescending(x => x.CreateAt)
+                    .Paginate(filter.Pagination)
+                    .ToListAsync();
+                return orders.ToPaged(filter.Pagination, totalRows).Ok();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<IActionResult> GetOrders(OrderFilterModel filter)
+        {
+            try
+            {
+                var query = _orderRepository.GetAll();
+                var totalRows = query.Count();
+                var orders = await query
+                    .ProjectTo<OrderViewModel>(_mapper.ConfigurationProvider)
+                    .Paginate(filter.Pagination)
+                    .ToListAsync();
+                return orders.ToPaged(filter.Pagination, totalRows).Ok();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public async Task<IActionResult> GetOrder(Guid id)
@@ -59,7 +97,7 @@ namespace Application.Services.Implementations
                     var result = await _unitOfWork.SaveChangesAsync();
                     if (result > 0)
                     {
-                        await CalculateProductQuantity(order);
+                            
                         await ClearCart(customerId);
                         return await GetOrder(order.Id);
                     }
@@ -108,7 +146,10 @@ namespace Application.Services.Implementations
                     product.Quantity =  product.Quantity - item.Quantity;
                     products.Add(product);
                 }
+                // Update list product da duoc chinh sua tren code
                 _productRepository.UpdateRange(products);
+
+                // Luu thay doi xuong database
                 await _unitOfWork.SaveChangesAsync();
             }
             catch (Exception)
