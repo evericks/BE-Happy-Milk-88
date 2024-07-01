@@ -15,6 +15,7 @@ namespace Data
         public IAdminRepository Admin { get; }
         public ICustomerRepository Customer { get; }
         public IProductRepository Product { get; }
+        public ITransactionRepository Transaction { get; }
 
         void BeginTransaction();
         void Commit();

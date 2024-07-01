@@ -18,7 +18,8 @@ namespace Infrastructure.Configurations
             services.AddScoped<ICartService, CartService>();
             services.AddScoped<ICustomerService, CustomerService>();
             services.AddScoped<IOrderService, OrderService>();
-            
+            services.AddScoped<IVNPayService, VNPayService>();
+
             services.AddTransient<IUnitOfWork, UnitOfWork>();
         }
 

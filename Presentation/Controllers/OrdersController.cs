@@ -3,7 +3,6 @@ using Common.Extensions;
 using Domain.Models.Creates;
 using Domain.Models.Filters;
 using Infrastructure.Configurations;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Controllers
