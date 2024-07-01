@@ -23,7 +23,7 @@ namespace Application.Services.Implementations
         public OrderService(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
         {
             _orderRepository = unitOfWork.Order;
-            _productRepository  = unitOfWork.Product;
+            _productRepository = unitOfWork.Product;
             _cartRepository = unitOfWork.Cart;
         }
 
@@ -83,24 +83,16 @@ namespace Application.Services.Implementations
         {
             try
             {
-                if (model.PaymentMethod.Equals(PaymentMethods.VNPAY))
+                var order = _mapper.Map<Order>(model);
+                order.CustomerId = customerId;
+                order.IsPayment = false;
+                order.Status = OrderStatuses.PENDING;
+                _orderRepository.Add(order);
+                var result = await _unitOfWork.SaveChangesAsync();
+                if (result > 0)
                 {
-                    return AppErrors.INVALID_PAYMENT_METHOD.BadRequest();
-                }
-                if (model.PaymentMethod.Equals(PaymentMethods.CASH))
-                {
-                    var order = _mapper.Map<Order>(model);
-                    order.CustomerId = customerId;
-                    order.IsPayment =false;
-                    order.Status = OrderStatuses.PENDING;
-                    _orderRepository.Add(order);
-                    var result = await _unitOfWork.SaveChangesAsync();
-                    if (result > 0)
-                    {
-                            
-                        await ClearCart(customerId);
-                        return await GetOrder(order.Id);
-                    }
+                    await ClearCart(customerId);
+                    return await GetOrder(order.Id);
                 }
                 return AppErrors.CREATE_FAIL.UnprocessableEntity();
             }
@@ -118,7 +110,8 @@ namespace Application.Services.Implementations
                     .Include(x => x.CartItems)
                     .AsTracking()
                     .FirstOrDefaultAsync();
-                if (cart == null) {
+                if (cart == null)
+                {
                     return;
                 }
                 cart.CartItems = new List<CartItem>();
@@ -143,7 +136,7 @@ namespace Application.Services.Implementations
                     {
                         continue;
                     }
-                    product.Quantity =  product.Quantity - item.Quantity;
+                    product.Quantity = product.Quantity - item.Quantity;
                     products.Add(product);
                 }
                 // Update list product da duoc chinh sua tren code

@@ -44,13 +44,18 @@ namespace Presentation.Controllers
                 CreateDate = now,
                 OrderType = "other",
                 ExpireDate = now.AddMinutes(15),
-                OrderInfo = "Payment for SuaMe88",
+                OrderInfo = "Payment for Happy Milk",
                 IpAddress = clientIp,
                 ReturnUrl = _appSettings.ReturnUrl,
                 TmnCode = _appSettings.MerchantId
             };
             var result = await _vnPayService.AddRequest(user.Id, input.OrderId, requestModel);
-            return result ? Ok(VnPayHelper.CreateRequestUrl(requestModel, _appSettings.VNPayUrl, _appSettings.MerchantPassword)) : NotFound();
+            var url = VnPayHelper.CreateRequestUrl(requestModel, _appSettings.VNPayUrl, _appSettings.MerchantPassword);
+            var response = new
+            {
+                Url = url,
+            };
+            return result ? Ok(response) : NotFound();
         }
 
         [HttpGet("ipn")]
